@@ -1,16 +1,15 @@
 const editor = document.getElementById("editor");
-let timeout;
 
-fetch("/api/text")
-  .then((res) => res.text())
-  .then((text) => (editor.value = text));
+const ws = new WebSocket(`ws://${location.host}/ws`);
+
+ws.addEventListener("message", (event) => {
+  if (editor.value !== event.data) {
+    editor.value = event.data;
+  }
+});
 
 editor.addEventListener("input", () => {
-  clearTimeout(timeout);
-  timeout = setTimeout(() => {
-    fetch("/api/text", {
-      method: "POST",
-      body: editor.value,
-    });
-  }, 500);
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.send(editor.value);
+  }
 });
