@@ -1,12 +1,16 @@
 :root {
-  --bg: #f4f4f4;
-  --fg: #333;
+  --bg: #ffffff;
+  --fg: #000000;
+  --border: #cccccc;
+  --bar-bg: #f4f4f4;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1e1e1e;
+    --bg: #0e0e0e;
     --fg: #e6e6e6;
+    --border: #333333;
+    --bar-bg: #151515;
   }
 }
 
@@ -33,4 +37,20 @@ textarea {
   color: var(--fg);
   white-space: nowrap;
   overflow-x: auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--fg);
 }
