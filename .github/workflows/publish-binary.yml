@@ -36,10 +36,6 @@ jobs:
 
           go build -ldflags="-s -w" -o "$BINARY_NAME" main.go
 
-          mkdir dist
-
-          cp -r static "$BINARY_NAME" dist/
-
           ARCHIVE_NAME="pad-${{ matrix.goos }}-${{ matrix.goarch }}"
 
           if [ "${{ matrix.goos }}" = "windows" ]; then

@@ -16,12 +16,10 @@ FROM scratch
 
 COPY --from=builder /etc/passwd /etc/passwd
 
-COPY --from=builder --chown=1000:1000 /app/static /static
 COPY --from=builder --chown=1000:1000 /app/pad /pad
 COPY --from=builder --chown=1000:1000 /data /data
 
 ENV PORT=8080 \
-    STATIC_DIR=/static \
     DATA_FILE=/data/pad.txt
 
 USER 1000

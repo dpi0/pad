@@ -1,6 +1,8 @@
 package main
 
 import (
+	"embed"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -8,6 +10,9 @@ import (
 
 	"github.com/gorilla/websocket"
 )
+
+//go:embed static
+var embedFS embed.FS
 
 var (
 	mu sync.RWMutex
@@ -26,14 +31,9 @@ func main() {
 		port = "8080"
 	}
 
-	staticDir := os.Getenv("STATIC_DIR")
-	if staticDir == "" {
-		staticDir = "./static"
-	}
-
-	_, err := os.Stat(staticDir)
+	staticFiles, err := fs.Sub(embedFS, "static")
 	if err != nil {
-		log.Fatalf("ERROR: STATIC_DIR='%s' does not exist", staticDir)
+		log.Fatal(err)
 	}
 
 	dataFile := os.Getenv("DATA_FILE")
@@ -47,10 +47,9 @@ func main() {
 	}
 
 	log.Printf("INFO: Starting server on port %s", port)
-	log.Printf("INFO: Serving static files from: %s", staticDir)
 	log.Printf("INFO: Data file: %s", dataFile)
 
-	http.Handle("/", http.FileServer(http.Dir(staticDir)))
+	http.Handle("/", http.FileServer(http.FS(staticFiles)))
 	http.HandleFunc("/api/text", handleText)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		handleWS(w, r, dataFile)
