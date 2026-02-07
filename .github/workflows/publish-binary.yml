@@ -39,10 +39,10 @@ jobs:
           ARCHIVE_NAME="pad-${{ matrix.goos }}-${{ matrix.goarch }}"
 
           if [ "${{ matrix.goos }}" = "windows" ]; then
-            zip -r "$ARCHIVE_NAME.zip" dist/
+            zip "$ARCHIVE_NAME.zip" "$BINARY_NAME"
             echo "ASSET_PATH=$ARCHIVE_NAME.zip" >> $GITHUB_ENV
           else
-            tar -czvf "$ARCHIVE_NAME.tar.gz" dist/
+            tar -czvf "$ARCHIVE_NAME.tar.gz" "$BINARY_NAME"
             echo "ASSET_PATH=$ARCHIVE_NAME.tar.gz" >> $GITHUB_ENV
           fi
       - uses: actions/upload-artifact@v6
