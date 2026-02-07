@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    name: Build binary
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -54,7 +55,7 @@ jobs:
           path: ${{ env.ASSET_PATH }}
           retention-days: 5
   publish:
-    name: Create Release
+    name: Publish Release
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -66,7 +67,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
-          pattern: bin-*
+          pattern: pad-*
           merge-multiple: true
       - name: Release
         uses: softprops/action-gh-release@v2
